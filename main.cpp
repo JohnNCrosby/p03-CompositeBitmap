@@ -36,6 +36,7 @@ int main()
     image.fromPixelMatrix(finish);    
     image.save("composite-jcrosby7.bmp");
     cout<<"Your images have been composited. The name for the file is composite-jcrosby7.bmp"<<endl;
+    return 0;
 }
 
 vector<Bitmap> imageList(vector<Bitmap> list)
@@ -58,7 +59,7 @@ vector<Bitmap> imageList(vector<Bitmap> list)
             cin>>name;
             image.open(name);
             validBmp = image.isImage();
-            if(validBmp = false)
+            if(validBmp == false)
             {
                 cout<<"Error not an image."<<endl;
             }
@@ -70,7 +71,7 @@ vector<Bitmap> imageList(vector<Bitmap> list)
     size = sizeTest(list);
     if(size == true)
     {
-        cout<<"Everything seems to be in order"<<endl;
+        cout<<"Everything seems to be in order."<<endl;
         return list;
     }
     else
@@ -89,12 +90,14 @@ bool sizeTest(vector<Bitmap> test)
     for(int i = 0; i < test.size(); i++)
     {
         t = test[i].toPixelMatrix();
+        cout<<"Current images size is "<<t.size()<<" "<<t[0].size()<<endl;
         if(bmp.size() == t.size() && bmp[0].size() == t[0].size())
         {
             x++;
         }
         b++;
     }
+    
     if(x == b)
     {
         return true;
@@ -112,18 +115,32 @@ void pixelConverter(vector<Bitmap> list, vector< vector< vector<Pixel> > > & bmp
     Bitmap hold, held;
     hold = list[0];
     place = hold.toPixelMatrix();
+    bmp.resize(place.size());
+    for(int x = 0; x < place.size(); x++)
+    {
+        bmp[x].resize(place[0].size());
+        for(int i = 0; i < list.size(); i++)
+        {
+            bmp[x][i].resize(list.size());
+        }
+    }
+    cout<<bmp.size()<<" "<<bmp[0].size()<<" "<<bmp[3].size()<<" "<<bmp[3][0].size()<<endl;
     for(int i = 0; i < list.size(); i++)
     {
+        held = list[i];
+        holder = held.toPixelMatrix();
         for(int x = 0; x < place.size(); x++)
         {
             for(int y = 0; y < place[0].size(); y++)
             {
-                held = list[i];
-                holder = held.toPixelMatrix();
+                //held = list[i];
+                //holder = held.toPixelMatrix();
                 bmp[x][y][i] = holder[x][y];
+                cout<<"Test"<<endl;
             }
         }
     }
+    cout<<"test"<<endl;
 }
 
 void combination(vector< vector< vector<Pixel> > > temp, vector< vector<Pixel> > & finish, vector<Bitmap> amount)
@@ -133,6 +150,11 @@ void combination(vector< vector< vector<Pixel> > > temp, vector< vector<Pixel> >
     r = 0.0;
     g = 0.0;
     b = 0.0;
+    finish.resize(temp.size());
+    for(int x = 0; x < temp.size(); x++)
+    {
+        finish[x].resize(temp[0].size());
+    }
     for(int x = 0; x < temp.size(); x++)
     {
         for(int y = 0; y < temp[0].size(); y++)
